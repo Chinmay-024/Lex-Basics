@@ -1,0 +1,32 @@
+%{
+int zero_count = 0;
+int one_count = 0;
+%}
+
+%%
+[01]    {
+            if (yytext[0] == '0') {
+                zero_count++;
+            } else if (yytext[0] == '1') {
+                one_count++;
+            }
+        }
+\n      {
+            if (zero_count % 2 == 0 || one_count % 2 == 1) {
+                printf("ACCEPTED\n");
+            } else {
+                printf("REJECTED\n");
+            }
+            zero_count = 0;
+            one_count = 0;
+        }
+.       {
+            printf("Invalid\n");
+            return 0;
+        }
+%%
+int yywrap(void){}
+int main() {
+    yylex();
+    return 0;
+}

@@ -1,0 +1,38 @@
+%{
+int length = 0;
+int a_c=0;
+int b_c=0;
+%}
+
+%%
+aa      {
+            length+=2;
+            a_c++;
+        }
+bb      {
+            length+=2;
+            b_c++;
+        }
+[abc]   {
+            length++;
+        }
+\n      {
+            if (length==8 && (a_c || b_c)) {
+                printf("ACCEPTED\n");
+            } else {
+                printf("REJECTED\n");
+            }
+            length=0;
+            a_c=0;
+            b_c=0;
+        }
+.       {
+            printf("Invalid\n");
+            return 0;
+        }
+%%
+int yywrap(void){}
+int main() {
+    yylex();
+    return 0;
+}
